@@ -1,7 +1,16 @@
-@()
+@(notes: Seq[Note])
 
 @main("The Browser") {
     <h1>The Browser</h1>
 
-    ...
+    <table>
+        <tbody>
+        @for(note <- notes) {
+            <tr>
+                <td>@note.noteId</td>
+                <td>@note.noteType</td>
+            </tr>
+        }
+        </tbody>
+    </table>
 }

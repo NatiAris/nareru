@@ -1,15 +1,19 @@
 package controllers
 
+import models.NoteRepository
+import play.api.libs.json.Json
 import play.api.mvc._
 
 import javax.inject._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
  */
 @Singleton
-class BrowserController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class BrowserController @Inject()(val controllerComponents: ControllerComponents,
+                                  noteRepo: NoteRepository) extends BaseController {
 
   /**
    * Create an Action to render an HTML page.
@@ -18,7 +22,15 @@ class BrowserController @Inject()(val controllerComponents: ControllerComponents
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.browser())
+  def index = Action.async { implicit request: Request[AnyContent] =>
+    noteRepo.list().map { notes =>
+      Ok(views.html.browser(notes))
+    }
+  }
+
+  def getNotesJson = Action.async { implicit request =>
+    noteRepo.list().map { notes =>
+      Ok(Json.toJson(notes))
+    }
   }
 }
