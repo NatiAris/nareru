@@ -45,4 +45,13 @@ class NoteRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)
       // ... replace the abomination below with mapN or smth
       .map(_.groupMap { case (n, _) => Note(n.noteId, n.noteType) } { case (_, c) => Card(c.cardId, c.noteId, c.front, c.back) })
   }
+
+  def addNote(cardRepo: CardRepository, note: cardmaker.Note): Unit = {
+    // make sure it's done as one transaction ...
+    create(note).foreach { case Note(noteId, _) =>
+      for { card <- note.cards } {
+        cardRepo.create(noteId, card.front, card.back)
+      }
+    }
+  }
 }

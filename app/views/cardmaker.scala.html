@@ -1,7 +1,19 @@
-@()
+@(noteForm: Form[NewNoteForm.Data])(implicit request: MessagesRequestHeader)
+
+@import helper._
+
+@request.flash.get("success").map { key =>
+  @request.messages(key)
+}
 
 @main("The Card Creation Interface") {
     <h1>The Card Creation Interface</h1>
 
-    ...
+    @form(routes.CardmakerController.addNote) {
+        @select(noteForm("noteType"), List("AB", "QA", "Seq").map(x => (x, x)))
+        @textarea(noteForm("blob"))
+        @CSRF.formField
+
+        <input type="submit" name="submit" value="Add Note">
+    }
 }
