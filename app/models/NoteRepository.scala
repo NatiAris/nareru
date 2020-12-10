@@ -14,7 +14,8 @@ class NoteRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)
   import dbConfig._
   import profile.api._
 
-  private[models] class NotesTable(tag: Tag) extends Table[Note](tag, "notes") {
+  private[models] class NotesTable(tag: Tag)
+    extends Table[Note](tag, "notes") {
     def noteId = column[Long]("note_id", O.PrimaryKey, O.AutoInc)
 
     def noteType = column[String]("note_type")
@@ -42,6 +43,6 @@ class NoteRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)
       .on(_.noteId === _.noteId)
       .result
       // ... replace the abomination below with mapN or smth
-      .map(_.groupMap{case (n, _) => Note(n.noteId, n.noteType)}{case (_, c) => Card(c.cardId, c.noteId, c.front, c.back)})
+      .map(_.groupMap { case (n, _) => Note(n.noteId, n.noteType) } { case (_, c) => Card(c.cardId, c.noteId, c.front, c.back) })
   }
 }

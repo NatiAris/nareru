@@ -14,7 +14,8 @@ class CardRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)
   import dbConfig._
   import profile.api._
 
-  private[models] class CardsTable(tag: Tag) extends Table[Card](tag, "cards") {
+  private[models] class CardsTable(tag: Tag)
+    extends Table[Card](tag, "cards") {
     def cardId = column[Long]("card_id", O.PrimaryKey, O.AutoInc)
 
     def noteId = column[Long]("note_id")

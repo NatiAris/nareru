@@ -1,6 +1,6 @@
 package controllers
 
-import models.{CardRepository, NoteRepository}
+import models.{CardRepository, NoteRepository, ProgressRepository}
 import play.api.libs.json.Json
 import play.api.mvc._
 
@@ -14,7 +14,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 @Singleton
 class BrowserController @Inject()(val controllerComponents: ControllerComponents,
                                   noteRepo: NoteRepository,
-                                  cardRepo: CardRepository) extends BaseController {
+                                  cardRepo: CardRepository,
+                                  progressRepo: ProgressRepository) extends BaseController {
 
   /**
    * Create an Action to render an HTML page.
@@ -38,6 +39,12 @@ class BrowserController @Inject()(val controllerComponents: ControllerComponents
   def getCardsJson = Action.async { implicit request =>
     cardRepo.list().map { cards =>
       Ok(Json.toJson(cards))
+    }
+  }
+
+  def getProgressJson = Action.async { implicit request =>
+    progressRepo.list().map { progress =>
+      Ok(Json.toJson(progress))
     }
   }
 }
