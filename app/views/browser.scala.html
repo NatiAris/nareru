@@ -1,15 +1,20 @@
-@(notes: Seq[Note])
+@(notes: Map[Note, Seq[Card]])
 
 @main("The Browser") {
     <h1>The Browser</h1>
 
     <table>
         <tbody>
-        @for(note <- notes) {
-            <tr>
-                <td>@note.noteId</td>
-                <td>@note.noteType</td>
-            </tr>
+        @for((note, cards) <- notes.toSeq) {
+            @for(card <- cards) {
+                <tr>
+                    <td>@note.noteId</td>
+                    <td>@note.noteType</td>
+                    <td>@card.cardId</td>
+                    <td>@card.front</td>
+                    <td>@card.back</td>
+                </tr>
+            }
         }
         </tbody>
     </table>

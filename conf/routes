@@ -8,6 +8,8 @@ GET     /                           controllers.HomeController.index
 GET     /cardmaker                  controllers.CardmakerController.index
 GET     /reviewer                   controllers.ReviewerController.index
 GET     /browser                    controllers.BrowserController.index
+GET     /all_notes                  controllers.BrowserController.getNotesJson
+GET     /all_cards                  controllers.BrowserController.getCardsJson
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
