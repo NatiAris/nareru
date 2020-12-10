@@ -2,6 +2,7 @@ package models
 
 import javax.inject.{Inject, Singleton}
 import play.api.db.slick.DatabaseConfigProvider
+import reviewer.ReviewResult
 import slick.jdbc.JdbcProfile
 
 import java.sql.Timestamp
@@ -36,5 +37,12 @@ class ProgressRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)
 
   def list(): Future[Seq[Progress]] = db.run {
     progress.result
+  }
+
+  def reviewCard(card: reviewer.Card, user: User, reviewResult: ReviewResult) = db.run {
+    val updatedCard = (new coach.rater.TrivialRater).rate(card, reviewResult)
+    (progress returning progress.map(p => (p.cardId, p.userId))).insertOrUpdate {
+      Progress(updatedCard.cardId, updatedCard.intervalSeconds, updatedCard.dueAt, user.userId)
+    }
   }
 }

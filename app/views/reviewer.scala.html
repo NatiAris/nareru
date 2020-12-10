@@ -1,15 +1,15 @@
-@()
+@(maybeCard: Option[Card])
 
 @main("Review") {
 
   <p align="center">
-      Front goes here
+      @maybeCard.fold("No cards available for review")(_.front)
   </p>
 
   <button type="button" class="collapsible"></button>
   <div class="content">
     <p align="center">
-        Back goes here
+        @maybeCard.fold("No cards available for review")(_.back)
     </p>
     <br>
     <p align="center">
