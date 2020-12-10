@@ -1,6 +1,6 @@
 package controllers
 
-import models.{CardRepository, NoteRepository, ProgressRepository}
+import models.{CardRepository, NoteRepository, ProgressRepository, UserRepository}
 import play.api.libs.json.Json
 import play.api.mvc._
 
@@ -15,6 +15,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class BrowserController @Inject()(val controllerComponents: ControllerComponents,
                                   noteRepo: NoteRepository,
                                   cardRepo: CardRepository,
+                                  userRepo: UserRepository,
                                   progressRepo: ProgressRepository) extends BaseController {
 
   /**
@@ -39,6 +40,12 @@ class BrowserController @Inject()(val controllerComponents: ControllerComponents
   def getCardsJson = Action.async { implicit request =>
     cardRepo.list().map { cards =>
       Ok(Json.toJson(cards))
+    }
+  }
+
+  def getUsersJson = Action.async { implicit request =>
+    userRepo.list().map { users =>
+      Ok(Json.toJson(users))
     }
   }
 

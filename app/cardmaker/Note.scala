@@ -20,7 +20,8 @@ object Note {
     )
   }
 
-  final case class Seq(title: String, fields: Vector[String]) extends Note("Seq") {
+  final case class Seq(title: String,
+                       fields: Vector[String]) extends Note("Seq") {
     override val cards: Vector[Card] = {
       val firstCard = Card(title, fields.head)
       val middleCards = fields.zip(fields.tail).map { case (front, back) => Card(front, back) }
